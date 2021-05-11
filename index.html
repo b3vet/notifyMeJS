@@ -4,11 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css"
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
     <title>Notify Me</title>
 </head>
 <body>
     <script type="text/javascript" src="js/script.js"></script>
+    <h1> WELCOME TO NOTFIY ME </h1>
+    <form id="data">
+        <label>URL of website you want to track</label>
+        <input type="text" name="url" placeholder="URL" id="url">
+        <label>Your bot ID of your telegram bot</label>
+        <input type="text" name="id" placeholder="ID" id="botid">
+        <label>Your chat id with your telegram bot</label>
+        <input type="text" name="id" placeholder="ID" id="chatid">
+        <button onclick="handleSubmit()">Track Changes</button>
+    </form>
+
 
 </body>
 </html>
