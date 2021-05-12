@@ -4,58 +4,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/styles.css">
     <title>Notify Me</title>
 </head>
 <body>
     <!--<script type="text/javascript" src="js/script.js"></script>-->
-    <h1> WELCOME TO NOTFIY ME </h1>
-    <form id="data">
-        
-        </p>
-        <label>URL of website you want to track</label>
-        <input type="text" name="url" placeholder="URL" id="url">
-        <label>Your bot ID of your telegram bot</label>
-        <input type="text" name="id" placeholder="ID" id="token">
-        <label>Your chat id with your telegram bot</label>
-        <input type="text" name="id" placeholder="ID" id="chatid">
-    </form>
-    <button onclick="handleSubmit(url.value, token.value, chatid.value)">Track Changes</button>
-    <button onclick="showValues(url.value, token.value, chatid.value)">values</button>
+    <script>console.log("bottoken: 1582464126:AAHDDKfYwzwuSDa1ThH1qbmgJmra_nUVSMo, chatid: 1112889988")</script>
+    <h1 style="text-align:center"> WELCOME TO NOTFIY ME </h1>
+    <div class="container">
+        <div class="row">
+            <div style="text-align:center;" class="col-4">
+                <form id="data" >
+                    <div class="form-group">
+                        <label for="url">URL of website you want to track</label>
+                        <input type="text" class="form-control" name="url" placeholder="URL" id="url" required>
+                    </div>
+                    <div class="form-group">
+                        <label for = "token">Your token of your telegram bot</label>
+                        <input type="text" class="form-control" name="token" placeholder="TOKEN" id="token" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="chatid">Your chat id with your telegram bot</label>
+                        <input type="text" class="form-control" name="id" placeholder="ID" id="chatid" required>
+                    </div>
+                </form>
+                <button class="btn btn-dark" onclick="handleSubmit(url.value, token.value, chatid.value, '')">Track Changes</button>
+            </div>
+            <div class="col-8" id="results">
+                
+                
+            </div>
+        </div>
+    </div>
 
     <script>
-        function showValues(m, btoken, cid) { console.log(m, btoken, cid) }
-    function handleSubmit(m,btoken,cid) {
-        console.log(m, btoken, cid)
+        async function sha256(message) {
+            // encode as UTF-8
+            const msgBuffer = new TextEncoder().encode(message);                    
 
-        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
-        var theUrl = "https://api.telegram.org/bot" + btoken + "/sendMessage";
-        xmlhttp.open("POST", theUrl);
-        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.setRequestHeader("cache-control", "no-cache");
-        xmlhttp.send(JSON.stringify({ "chat_id": cid, "text": m }));
-        /*
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "https://api.telegram.org/bot" + btoken + "/sendMessage",
-        "method": "POST",
-        "headers": {
-            "Content-Type": "application/json",
-            "cache-control": "no-cache"
-        },
-        "data": {
-            "chat_id": cid,
-            "text": m
+            // hash the message
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+            // convert ArrayBuffer to Array
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+            // convert bytes to hex string                  
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
         }
-    
-    }
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-        console.log("ive sent the message")
-    }); 
-    */
+        /*
+        function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+                currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
+        } */
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        
+
+        function sendMessage(btoken, cid, url) {
+            var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+            var theUrl = "https://api.telegram.org/bot" + btoken + "/sendMessage";
+            xmlhttp.open("POST", theUrl);
+            xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.setRequestHeader("cache-control", "no-cache");
+            xmlhttp.send(JSON.stringify({ "chat_id": cid, "text": "something is changed in " + url }));
+            document.getElementById("chatid").value = "";
+            document.getElementById("token").value = "";
+            document.getElementById("results").innerText += "SOMETHING CHANGED IN THE URL: " + url + " \nMessage is sent via telegram.\n";
+        }
+
+
+        async function handleSubmit(url,btoken,cid, initHash) {
+            document.getElementById("results").innerText = "Starting the track process...\n";
+            
+            //GET THE FILE NEEDED
+            fetch("https://agile-earth-77295.herokuapp.com/" + url)
+            .then(response => response.blob())
+            .then(async function(myBlob) {
+                const resText = await myBlob.text()
+                initHash = await sha256(resText);
+                console.log('init hash');
+                console.log(initHash);
+            })
+            .catch(err => console.log(err));
+            await sleep(8000);
+
+            while(true) {
+                fetch("https://agile-earth-77295.herokuapp.com/" + url)
+                .then(response => response.blob())
+                .then(async function(myBlob) {
+                    const resText = await myBlob.text();
+                    const currHash = await sha256(resText);
+                    console.log('current hash is')
+                    console.log(currHash);
+                    if(currHash != initHash) {//something changed
+                        sendMessage(btoken, cid, url);
+                    }
+                    else { 
+                        document.getElementById("results").innerText += "Nothing is changed. Trying again in 8 seconds.\n";
+                    }
+                })
+                .catch(err => console.log(err));
+                await sleep(8000);
+            }
+
+            
     }
     
     </script>
