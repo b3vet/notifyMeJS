@@ -34,7 +34,7 @@
                 </form>
                 <button class="btn btn-dark" onclick="handleSubmit(url.value, token.value, chatid.value, '')">Track Changes</button>
             </div>
-            <div class="col-8" id="results">
+            <div class="col-8" id="results" style="text-align:center">
                 
                 
             </div>
@@ -77,15 +77,15 @@
             xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xmlhttp.setRequestHeader("cache-control", "no-cache");
             xmlhttp.send(JSON.stringify({ "chat_id": cid, "text": "something is changed in " + url }));
-            document.getElementById("chatid").value = "";
-            document.getElementById("token").value = "";
+            
             document.getElementById("results").innerText += "SOMETHING CHANGED IN THE URL: " + url + " \nMessage is sent via telegram.\n";
         }
 
 
         async function handleSubmit(url,btoken,cid, initHash) {
             document.getElementById("results").innerText = "Starting the track process...\n";
-            
+            document.getElementById("chatid").value = "";
+            document.getElementById("token").value = "";
             //GET THE FILE NEEDED
             fetch("https://agile-earth-77295.herokuapp.com/" + url)
             .then(response => response.blob())
@@ -97,7 +97,7 @@
             })
             .catch(err => console.log(err));
             await sleep(8000);
-
+            
             while(true) {
                 fetch("https://agile-earth-77295.herokuapp.com/" + url)
                 .then(response => response.blob())
@@ -108,6 +108,7 @@
                     console.log(currHash);
                     if(currHash != initHash) {//something changed
                         sendMessage(btoken, cid, url);
+                        return;
                     }
                     else { 
                         document.getElementById("results").innerText += "Nothing is changed. Trying again in 8 seconds.\n";
@@ -116,6 +117,7 @@
                 .catch(err => console.log(err));
                 await sleep(8000);
             }
+            
 
             
     }
