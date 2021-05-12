@@ -12,8 +12,7 @@
     <!--<script type="text/javascript" src="js/script.js"></script>-->
     <h1> WELCOME TO NOTFIY ME </h1>
     <form id="data">
-        <p>bottoken: 1582464126:AAHDDKfYwzwuSDa1ThH1qbmgJmra_nUVSMo</p>
-        <p>chatid: 1112889988</p>
+        
         </p>
         <label>URL of website you want to track</label>
         <input type="text" name="url" placeholder="URL" id="url">
@@ -21,15 +20,22 @@
         <input type="text" name="id" placeholder="ID" id="token">
         <label>Your chat id with your telegram bot</label>
         <input type="text" name="id" placeholder="ID" id="chatid">
-        <button onclick="handleSubmit(url.value, token.value, chatid.value)">Track Changes</button>
     </form>
+    <button onclick="handleSubmit(url.value, token.value, chatid.value)">Track Changes</button>
+    <button onclick="showValues(url.value, token.value, chatid.value)">values</button>
 
     <script>
+        function showValues(m, btoken, cid) { console.log(m, btoken, cid) }
     function handleSubmit(m,btoken,cid) {
-    //var message = $('#url').val()
-    //var telegram_bot_id = $('#botid').val()
-    //var chat_id = $('#chatid').val()
+        console.log(m, btoken, cid)
 
+        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        var theUrl = "https://api.telegram.org/bot" + btoken + "/sendMessage";
+        xmlhttp.open("POST", theUrl);
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.setRequestHeader("cache-control", "no-cache");
+        xmlhttp.send(JSON.stringify({ "chat_id": cid, "text": m }));
+        /*
     var settings = {
         "async": true,
         "crossDomain": true,
@@ -39,17 +45,19 @@
             "Content-Type": "application/json",
             "cache-control": "no-cache"
         },
-        "data": JSON.stringify({
+        "data": {
             "chat_id": cid,
             "text": m
-        })
+        }
+    
     }
-  
     $.ajax(settings).done(function (response) {
         console.log(response);
         console.log("ive sent the message")
     }); 
+    */
     }
+    
     </script>
 </body>
 </html>
