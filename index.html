@@ -91,8 +91,8 @@
             })
             .catch(err => console.log(err));
             await sleep(8000);
-            
-            while(true) {
+            var change = false;
+            while(!change) {
                 fetch("https://agile-earth-77295.herokuapp.com/" + url)
                 .then(response => response.blob())
                 .then(async function(myBlob) {
@@ -102,7 +102,7 @@
                     console.log(currHash);
                     if(currHash != initHash) {//something changed
                         sendMessage(btoken, cid, url);
-                        return;
+                        change = true;
                     }
                     else { 
                         document.getElementById("results").innerText += "Nothing is changed. Trying again in 8 seconds.\n";
