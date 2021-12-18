@@ -5,15 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -31,24 +31,24 @@
     <title>Notify Me</title>
   </head>
   <body onload="checkNoti()">
-    <h1 style="text-align: center">WELCOME TO NOTFIY ME</h1>
+    <h1 style="text-align: center">notify me</h1>
     <div class="container">
       <div class="row">
         <div style="text-align: center" class="col-4">
           <p class="text-muted mt-5" id="notiBanner">
-            Please allow notifications for the page in order to know at the
-            exact moment of update.
+            please allow notifications for the page in order to know at the
+            exact moment of update
           </p>
           <button
             id="notiButton"
             class="btn btn-success"
             onclick="handleNotificationPermissionChange()"
           >
-            Enable notifications
+            enable notifications
           </button>
           <form id="data" class="mt-5">
             <div class="form-group">
-              <label for="url">URL of website you want to track</label>
+              <label for="url">url of website you want to track</label>
               <input
                 type="text"
                 class="form-control"
@@ -59,26 +59,27 @@
               />
             </div>
             <div class="form-group">
-              <label for="email">Your email address to notify you</label>
+              <label for="email">your email address to notify you</label>
               <input
                 type="text"
                 class="form-control"
                 name="email"
-                placeholder="DISABLED FOR NOW"
+                placeholder="disabled for now"
                 id="email"
                 disabled
               />
             </div>
+            <button
+              type="submit"
+              class="btn btn-dark"
+              id="trackButton"
+              onclick="handleSubmit(event, url.value, email.value)"
+            >
+              track changes
+            </button>
           </form>
-          <button
-            class="btn btn-dark"
-            id="trackButton"
-            onclick="handleSubmit(url.value, email.value)"
-          >
-            Track Changes
-          </button>
         </div>
-        <div class="col-8" id="results" style="text-align: center"></div>
+        <div class="col-8 mt-5" id="results" style="text-align: center"></div>
       </div>
     </div>
   </body>

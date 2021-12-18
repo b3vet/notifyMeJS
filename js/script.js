@@ -12,24 +12,29 @@ const sleep = async (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+const removeNoti = () => {
+  document.getElementById("notiBanner").remove();
+  document.getElementById("notiButton").remove();
+};
+
 const checkNoti = (ev) => {
   if (Notification.permission !== "granted") {
     document.getElementById("trackButton").disabled = true;
   } else {
-    document.getElementById("notiBanner").remove()
-    document.getElementById("notiButton").remove()
+    removeNoti();
   }
 };
 
 const handleNotificationPermissionChange = async () => {
   if (!("Notification" in window)) {
     alert(
-      "This browser does not support notifications. This feature is not gonna work!"
+      "this browser does not support notifications. this feature is not gonna work!"
     );
   } else {
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
       document.getElementById("trackButton").disabled = false;
+      removeNoti();
     }
   }
 };
@@ -39,7 +44,7 @@ const sendMail = (url, email) => {
   Email.send({
     Host: "smtp.yandex.com:465",
     Username: "thisismydummymail",
-    Password: "decsix-Jegsaz-xocjy7",
+    Password: "THISISAPASSWORD",
     To: email,
     From: "notifyMe@js.com",
     Subject: `Something changed in the url: ${url}`,
@@ -48,19 +53,21 @@ const sendMail = (url, email) => {
 };
 
 const sendNotification = (url) => {
-  var text = `HEY! Something changed in the URL: ${url}`;
-  var notification = new Notification('CHANGE IN URL', { body: text });
-  notification.addEventListener('show', async (ev) => {
+  var text = `HEY! something changed in the URL: ${url}`;
+  var notification = new Notification("CHANGE IN URL", { body: text });
+  notification.addEventListener("show", async (ev) => {
     setTimeout(() => {
-      notification.close()
-    }, 5000)
-  })
-}
+      notification.close();
+    }, 5000);
+  });
+};
 
 const getHashOfURL = async (url) => {
-  const response = await fetch(
-    "https://agile-earth-77295.herokuapp.com/" + url
-  );
+  const response = await fetch("http://localhost:3100/",{
+    headers: [
+      ["Target-URL", url] 
+    ]
+  });
   const responseText = await response.text();
   try {
     return sha256(responseText);
@@ -69,9 +76,10 @@ const getHashOfURL = async (url) => {
   }
 };
 
-const handleSubmit = async (url, email) => {
+const handleSubmit = async (e, url, email) => {
+  e.preventDefault();
   document.getElementById("results").innerText =
-    "Starting the track process...\n";
+    "starting the track process...\n";
 
   const initHash = await getHashOfURL(url);
   await sleep(8000);
@@ -80,13 +88,13 @@ const handleSubmit = async (url, email) => {
     if (hash !== initHash) {
       //something changed
       document.getElementById("results").innerText +=
-        "SOMETHING CHANGED IN THE URL: " + url + " \nSending mail to NOTIFY!\n";
+        "SOMETHING CHANGED IN THE URL: " + url;
       //sendMail(url, email);
-      sendNotification(url)
+      sendNotification(url);
       return;
     } else {
       document.getElementById("results").innerText +=
-        "Nothing is changed. Trying again in 8 seconds.\n";
+        "nothing is changed. Trying again in 8 seconds.\n";
     }
     await sleep(8000);
   }
