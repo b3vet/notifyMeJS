@@ -63,7 +63,7 @@ const sendNotification = (url) => {
 };
 
 const getHashOfURL = async (url) => {
-  const response = await fetch("http://localhost:3100/",{
+  const response = await fetch("https://notify-me-proxy.herokuapp.com/",{
     headers: [
       ["Target-URL", url] 
     ]
