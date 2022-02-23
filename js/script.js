@@ -39,7 +39,7 @@ const handleNotificationPermissionChange = async () => {
   }
 };
 
-const sendMail = (url, email) => {
+const sendMail = async (url, email) => {
   const response = await fetch({
     url: "https://notify-me-email-service.herokuapp.com/",
     body: { url, to: email},
@@ -88,7 +88,7 @@ const handleSubmit = async (e, url, email) => {
       document.getElementById("results").innerText +=
         "SOMETHING CHANGED IN THE URL: " + url;
       if (email) {
-        sendMail(url, email);
+        await sendMail(url, email);
       }
       sendNotification(url);
       return;
