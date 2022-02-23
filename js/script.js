@@ -41,7 +41,7 @@ const handleNotificationPermissionChange = async () => {
 
 const sendMail = async (url, email) => {
   const response = await fetch({
-    url: "https://notify-me-email-service.herokuapp.com/",
+    url: "https://notify-me-email-service.herokuapp.com/sendmail",
     body: { url, to: email},
     method: "POST",
   })
@@ -61,7 +61,7 @@ const sendNotification = (url) => {
 };
 
 const getHashOfURL = async (url) => {
-  const response = await fetch("https://notify-me-proxy.herokuapp.com/sendmail",{
+  const response = await fetch("https://notify-me-proxy.herokuapp.com/",{
     headers: [
       ["Target-URL", url] 
     ]
