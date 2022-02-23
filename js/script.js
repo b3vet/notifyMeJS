@@ -40,16 +40,14 @@ const handleNotificationPermissionChange = async () => {
 };
 
 const sendMail = (url, email) => {
-  console.log("mail is", email);
-  Email.send({
-    Host: "smtp.yandex.com:465",
-    Username: "thisismydummymail",
-    Password: "THISISAPASSWORD",
-    To: email,
-    From: "notifyMe@js.com",
-    Subject: `Something changed in the url: ${url}`,
-    Body: "GO CHECK THE URL NOW! SOMETHING CHANGED! " + url,
-  }).then((message) => alert(message));
+  const response = await fetch({
+    url: "https://notify-me-email-service.herokuapp.com/",
+    body: { url, to: email},
+    method: "POST",
+  })
+  if (response?.status === 400) {
+    alert("could not send the mail but something changed yeah")
+  }
 };
 
 const sendNotification = (url) => {
@@ -89,7 +87,9 @@ const handleSubmit = async (e, url, email) => {
       //something changed
       document.getElementById("results").innerText +=
         "SOMETHING CHANGED IN THE URL: " + url;
-      //sendMail(url, email);
+      if (email) {
+        sendMail(url, email);
+      }
       sendNotification(url);
       return;
     } else {
